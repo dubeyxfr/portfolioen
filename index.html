@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Smart Portfolio Builder</title>
+   <style>
+     * {
+       box-sizing: border-box;
+     }
+     body {
+       font-family: 'Segoe UI', sans-serif;
+       background: linear-gradient(to right, #74ebd5, #9face6);
+       margin: 0;
+       padding: 0;
+     }
+     .container {
+       max-width: 900px;
+       margin: 50px auto;
+       background: rgba(255, 255, 255, 0.98);
+       padding: 40px;
+       border-radius: 15px;
+       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+       animation: fadeIn 1s ease-in-out;
+     }
+     @keyframes fadeIn {
+       from { opacity: 0; transform: translateY(30px); }
+       to { opacity: 1; transform: translateY(0); }
+     }
+     h1 {
+       text-align: center;
+       color: #2c3e50;
+       margin-bottom: 30px;
+       font-size: 36px;
+     }
+     .form-group {
+       margin-bottom: 25px;
+     }
+     label {
+       display: block;
+       font-weight: bold;
+       color: #2f2f2f;
+       margin-bottom: 10px;
+       font-size: 18px;
+       background: linear-gradient(to right, #00c6ff, #0072ff);
+       color: white;
+       padding: 8px 12px;
+       border-radius: 6px;
+       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+     }
+     input, textarea {
+       width: 100%;
+       padding: 14px;
+       border: 1px solid #ccc;
+       border-radius: 8px;
+       font-size: 16px;
+       transition: border-color 0.3s ease;
+     }
+     input:focus, textarea:focus {
+       border-color: #007bff;
+       outline: none;
+     }
+     input[type="file"] {
+       padding: 10px;
+       background-color: #f0f0f0;
+     }
+     button {
+       margin-top: 30px;
+       width: 100%;
+       padding: 15px;
+       background: linear-gradient(to right, #007bff, #00c6ff);
+       color: white;
+       font-size: 18px;
+       font-weight: bold;
+       border: none;
+       border-radius: 8px;
+       cursor: pointer;
+       transition: transform 0.3s ease, background 0.3s ease;
+     }
+     button:hover {
+       transform: scale(1.05);
+       background: linear-gradient(to right, #0056b3, #009ee3);
+     }
+     #output {
+       margin-top: 40px;
+       text-align: center;
+     }
+     iframe {
+       margin-top: 20px;
+       border: 1px solid #ccc;
+       width: 100%;
+       height: 500px;
+       border-radius: 12px;
+     }
+   </style>
+ </head>
+ <body>
+   <div class="container">
+     <h1>✨ AI Portfolio Generator ✨</h1>
+     <div class="form-group">
+       <label for="name">👤 Full Name</label>
+       <input type="text" id="name" placeholder="e.g. John Doe" />
+     </div>
+ 
+     <div class="form-group">
+       <label for="bio">📝 Short Bio</label>
+       <textarea id="bio" rows="4" placeholder="Write a short professional summary..."></textarea>
+     </div>
+ 
+     <div class="form-group">
+       <label for="skills">🛠️ Skills</label>
+       <input type="text" id="skills" placeholder="e.g. HTML, CSS, JavaScript, React" />
+     </div>
+ 
+     <div class="form-group">
+       <label for="projects">📂 Projects</label>
+       <textarea id="projects" rows="5" placeholder="e.g. Portfolio Website\nTo-Do App\nChatbot using JavaScript"></textarea>
+     </div>
+ 
+     <div class="form-group">
+       <label for="education">🎓 Education</label>
+       <textarea id="education" rows="3" placeholder="e.g. B.Tech in CSE, XYZ University, 2021-2025"></textarea>
+     </div>
+ 
+     <div class="form-group">
+       <label for="experience">💼 Work Experience</label>
+       <textarea id="experience" rows="3" placeholder="e.g. Intern at ABC Tech, June 2024 - Aug 2024"></textarea>
+     </div>
+ 
+     <div class="form-group">
+       <label for="photo">📸 Upload Profile Photo</label>
+       <input type="file" id="photo" accept="image/*" />
+     </div>
+ 
+     <button onclick="generatePortfolio()">🚀 Generate & Download Portfolio</button>
+ 
+     <div id="output"></div>
+   </div>
+ 
+   <script>
+     function generatePortfolio() {
+       const name = document.getElementById('name').value.trim();
+       const bio = document.getElementById('bio').value.trim();
+       const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim());
+       const projects = document.getElementById('projects').value.split('\n').map(p => p.trim());
+       const education = document.getElementById('education').value.trim();
+       const experience = document.getElementById('experience').value.trim();
+       const photoFile = document.getElementById('photo').files[0];
+ 
+       const reader = new FileReader();
+       reader.onload = function(e) {
+         const photoURL = e.target.result;
+ 
+         const portfolioHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${name}'s Portfolio</title><style>body{font-family:'Segoe UI',sans-serif;background:#eef2f3;margin:0;padding:30px}.wrapper{max-width:900px;margin:auto;background:white;padding:40px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1)}h1,h2{color:#2c3e50}p{font-size:18px;color:#444}ul{padding-left:20px}li{background:#f0f8ff;margin:10px 0;padding:12px;border-radius:6px;font-size:16px}img{max-width:120px;float:right;border-radius:50%;margin-left:20px}</style></head><body><div class="wrapper"><h1>${name}</h1><img src="${photoURL}" alt="Profile Photo"><p>${bio}</p><h2>Skills</h2><ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul><h2>Projects</h2><ul>${projects.map(project => `<li>${project}</li>`).join('')}</ul><h2>Education</h2><p>${education}</p><h2>Work Experience</h2><p>${experience}</p></div></body></html>`;
+ 
+         const blob = new Blob([portfolioHTML], { type: 'text/html' });
+         const url = URL.createObjectURL(blob);
+ 
+         document.getElementById('output').innerHTML = `
+           <a href="${url}" download="${name.replace(/\s+/g, '_')}_Portfolio.html">
+             <button style="margin-top:20px">📥 Download Your Portfolio</button>
+           </a>
+           <iframe src="${url}"></iframe>
+         `;
+       };
+ 
+       if (photoFile) {
+         reader.readAsDataURL(photoFile);
+       } else {
+         alert('Please upload a profile photo to generate your portfolio.');
+       }
+     }
+   </script>
+ </body>
+ </html>
